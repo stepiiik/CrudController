@@ -2,9 +2,15 @@
 
 /**
  * CRUDControllerAbstract
+ *
+ * Abstraktní magický nástoj, který pomůže snadno vytvořit webovou aplikaci umožňující CRUD operace s databázovou tabulkou
+ * Magie je provedena ve třech krocích
+ * 1. Implementace metody getForm(), která vrátí formulář (Zend_Form) a metody getModel(), která vrátí Data Table Gateway třídu pro tabulku (Zend_Db_Table)
+ * 2. Implementace metody indexAction() podle požadavků konkrétní aplikace
+ * 3. Vytvoření příslušných šablon (index.phtml, create.phtml, edit.phtml)
  * 
- * @author
- * @version 
+ * @author Štěpán Zikmund (stepan.zikmund@gmail.com)
+ * @version 0.1
  */
 abstract class Stepiiik_CRUDController extends Zend_Controller_Action
 {
@@ -51,7 +57,7 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
     abstract protected function getForm();
 
     /**
-     * Zatim ocekava vzdy akci index
+     * Controller ocekava vzdy akci index
      */
     abstract function indexAction();
 
