@@ -9,20 +9,30 @@
 abstract class Stepiiik_CRUDController extends Zend_Controller_Action
 {
 
-    protected function _preEdit($args = null)
+    protected function _preUpdate($args = null)
+    {
+    
+    }
+
+	protected function _postUpdate($args = null)
     {
     
     }
     
+	protected function _preDelete($args = null)
+	{
+		
+	}
+
     protected function _postDelete($args = null)
     {
     
     }
     
-    protected function _postEdit($args = null)
-    {
-    
-    }
+	protected function _preInsert($args = null)
+	{
+		
+	}
     
     protected function _postInsert($args = null)
     {
@@ -47,6 +57,8 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
 
     public function createAction()
     {
+		$this->_preInsert();
+	
         $form = $this->getForm();
         
         if ($this->_request->isPost()) {
@@ -98,7 +110,7 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
         }
         
         $form->populate($row->toArray());
-        $this->view->object = $row;
+        $this->view->data = $row;
         $this->view->form = $form;
     }
 
@@ -106,6 +118,9 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
     {
         $model = $this->getModel();
         $id = $this->_getParam('id');
+		
+		$this->_preDelete(array('id' => $id));
+
         $result = $model->find($id);
         if ($result->count() !== 1) {
             return $this->_redirect($this->_helper->url('index'));
