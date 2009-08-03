@@ -20,25 +20,25 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
     
     }
 
-	protected function _postUpdate($args = null)
+    protected function _postUpdate($args = null)
     {
     
     }
     
-	protected function _preDelete($args = null)
-	{
+    protected function _preDelete($args = null)
+    {
 		
-	}
+    }
 
     protected function _postDelete($args = null)
     {
     
     }
     
-	protected function _preInsert($args = null)
-	{
-		
-	}
+    protected function _preInsert($args = null)
+    {
+    	
+    }
     
     protected function _postInsert($args = null)
     {
