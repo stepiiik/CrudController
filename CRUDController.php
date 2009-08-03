@@ -63,7 +63,7 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
 
     public function createAction()
     {
-		$this->_preInsert();
+        $this->_preInsert();
 	
         $form = $this->getForm();
         
@@ -125,7 +125,7 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
         $model = $this->getModel();
         $id = $this->_getParam('id');
 		
-		$this->_preDelete(array('id' => $id));
+        $this->_preDelete(array('id' => $id));
 
         $result = $model->find($id);
         if ($result->count() !== 1) {
