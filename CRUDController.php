@@ -14,6 +14,47 @@
  */
 abstract class Stepiiik_CRUDController extends Zend_Controller_Action
 {
+    /**
+     * FlashMessenger
+     *
+     * @var Zend_Controller_Action_Helper_FlashMessenger
+     */
+	protected $_flashMessenger = null;
+	
+    public function init()
+    {
+        $this->_flashMessenger =
+            $this->_helper->getHelper('FlashMessenger');
+        $this->initView();
+    }
+	
+    /**
+     * Metoda se pro použitíí implementuje tak, že vrátí pole zpráv s indexy
+     * create - Pro zprávu po vytvoření řádku
+     * update - Pro zprávu po úpravě řádku
+     * delete - Pro zpárvu po smazání řádku
+     *
+     * @return array
+     */
+    protected function _flashMessages()
+    {
+        return array();
+    }
+    
+    protected function _getFlashMessage($title)
+    {
+        if (array_key_exists($title, $this->_flashMessages)) {
+            $arr = $this->_flashMessages;
+            return $arr[$title];
+        }
+        
+        return null;
+    }
+
+    public function postDispatch()
+    {
+        $this->view->messages = $this->_flashMessenger->getMessages();
+    }
 
     protected function _preUpdate($args = null)
     {
@@ -76,6 +117,10 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
                 $model = $this->getModel();
                 
                 $args = array('id' => $model->insert($form->getValues()));
+
+                if ($this->_getFlashMessage('create')) {
+                    $this->_flashMessenger->addMessage($this->_getFlashMessage('create'));
+                }
                 
                 $this->_postInsert($args);
                 
@@ -108,6 +153,10 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
             }
             else {
                 $model->update($form->getValues(), 'id=' . $id);
+
+                if ($this->_getFlashMessage('edit')) {
+                    $this->_flashMessenger->addMessage($this->_getFlashMessage('edit'));
+                }
                 
                 $this->_postEdit();
                 
@@ -132,6 +181,10 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
             return $this->_redirect($this->_helper->url('index'));
         }
         $result->current()->delete();
+
+        if ($this->_getFlashMessage('delete')) {
+            $this->_flashMessenger->addMessage($this->_getFlashMessage('delete'));
+        }
         
         $this->_postDelete();
         
