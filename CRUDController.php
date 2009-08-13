@@ -203,5 +203,3 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
         $this->view->data = $result->current();
     }
 }
-?>
-
