@@ -1,5 +1,5 @@
 <?php
-
+ 
 /**
  * CRUDControllerAbstract
  *
@@ -20,14 +20,15 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
      * @var Zend_Controller_Action_Helper_FlashMessenger
      */
 	protected $_flashMessenger = null;
-	
+	 
     public function init()
     {
-        $this->_flashMessenger =
+		$this->_flashMessenger =
             $this->_helper->getHelper('FlashMessenger');
+	        
         $this->initView();
     }
-	
+ 
     /**
      * Metoda se pro použitíí implementuje tak, že vrátí pole zpráv s indexy
      * create - Pro zprávu po vytvoření řádku
@@ -50,27 +51,27 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
         
         return null;
     }
-
+ 
     public function postDispatch()
     {
-        $this->view->messages = $this->_flashMessenger->getMessages();
+        //$this->view->messages = $this->_flashMessenger->getMessages();
     }
-
-    protected function _preUpdate($args = null)
+ 
+    protected function _preEdit($args = null)
     {
     
     }
-
-    protected function _postUpdate($args = null)
+ 
+    protected function _postEdit($args = null)
     {
     
     }
     
     protected function _preDelete($args = null)
     {
-		
+ 
     }
-
+ 
     protected function _postDelete($args = null)
     {
     
@@ -86,26 +87,26 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
     
     }
     
-
+ 
     /**
      * @return Zend_Db_Table
      */
     abstract protected function getModel();
-
+ 
     /**
      * @retun Zend_Form
      */
     abstract protected function getForm();
-
+ 
     /**
      * Controller ocekava vzdy akci index
      */
     abstract function indexAction();
-
+ 
     public function createAction()
     {
         $this->_preInsert();
-	
+ 
         $form = $this->getForm();
         
         if ($this->_request->isPost()) {
@@ -117,7 +118,7 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
                 $model = $this->getModel();
                 
                 $args = array('id' => $model->insert($form->getValues()));
-
+ 
                 if ($this->_getFlashMessage('create')) {
                     $this->_flashMessenger->addMessage($this->_getFlashMessage('create'));
                 }
@@ -130,7 +131,7 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
         
         $this->view->form = $form;
     }
-
+ 
     public function editAction()
     {
         $this->_preEdit();
@@ -153,7 +154,7 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
             }
             else {
                 $model->update($form->getValues(), 'id=' . $id);
-
+ 
                 if ($this->_getFlashMessage('edit')) {
                     $this->_flashMessenger->addMessage($this->_getFlashMessage('edit'));
                 }
@@ -163,25 +164,25 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
                 $this->_redirect($this->_helper->url('index'));
             }
         }
-        
+
         $form->populate($row->toArray());
         $this->view->data = $row;
         $this->view->form = $form;
     }
-
+ 
     public function deleteAction()
     {
         $model = $this->getModel();
         $id = $this->_getParam('id');
-		
+ 
         $this->_preDelete(array('id' => $id));
-
+ 
         $result = $model->find($id);
         if ($result->count() !== 1) {
             return $this->_redirect($this->_helper->url('index'));
         }
         $result->current()->delete();
-
+ 
         if ($this->_getFlashMessage('delete')) {
             $this->_flashMessenger->addMessage($this->_getFlashMessage('delete'));
         }
@@ -190,7 +191,7 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
         
         return $this->_redirect($this->_helper->url('index'));
     }
-
+ 
     public function detailAction()
     {
         $model = $this->getModel();
