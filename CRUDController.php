@@ -153,7 +153,7 @@ abstract class Stepiiik_CRUDController extends Zend_Controller_Action
                 $this->view->form = $form;
             }
             else {
-                $model->update($form->getValues(), 'id=' . $id);
+	            $model->update($form->getValues(), 'id=' . $model->getAdapter()->quote($id,  'INTEGER'));
  
                 if ($this->_getFlashMessage('edit')) {
                     $this->_flashMessenger->addMessage($this->_getFlashMessage('edit'));
